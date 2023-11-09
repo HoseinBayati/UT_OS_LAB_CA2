@@ -123,7 +123,8 @@ static int (*syscalls[])(void) = {
     [SYS_link] sys_link,
     [SYS_mkdir] sys_mkdir,
     [SYS_close] sys_close,
-    [SYS_find_digital_root] sys_find_digital_root};
+    [SYS_find_digital_root] sys_find_digital_root,
+};
 
 void syscall(void)
 {

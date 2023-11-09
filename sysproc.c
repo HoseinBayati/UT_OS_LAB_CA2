@@ -7,10 +7,13 @@
 #include "mmu.h"
 #include "proc.h"
 
-int sys_find_digital_root(int)
+int sys_find_digital_root(void)
 {
-
-  return 24681012;
+  int a;
+  if (argint(0, &a) < 0) {
+    return -1; // Return an error code if argument retrieval fails.
+  }
+  return a;
 }
 
 int sys_fork(void)

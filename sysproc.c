@@ -10,9 +10,29 @@
 int sys_find_digital_root(void)
 {
   int a;
-  if (argint(0, &a) < 0) {
-    return -1; // Return an error code if argument retrieval fails.
+  if (argint(0, &a) < 0)
+  {
+    return -1;
   }
+
+  if (a < 0)
+  {
+    return -1;
+  }
+
+  int digital_root;
+  while (a >= 10)
+  {
+    digital_root = 0;
+    while (a > 0)
+    {
+      digital_root += a % 10;
+      a /= 10;
+    }
+
+    a = digital_root;
+  }
+
   return a;
 }
 

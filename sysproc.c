@@ -7,6 +7,31 @@
 #include "mmu.h"
 #include "proc.h"
 
+int sys_copy_file()
+{
+  // char *src, *dst;
+  // int n;
+
+  // if (argstr(0, &src) < 0 || argstr(1, &dst) < 0)
+  //   return -1;
+
+  // struct file *fsrc, *fdst;
+  // if ((fsrc = file_open(src, O_RDONLY)) == NULL)
+  //   return -1;
+
+  // if ((fdst = file_open(dst, O_WRONLY | O_CREATE)) == NULL)
+  //   return -1;
+
+  // char buf[512];
+  // while ((n = file_read(fsrc, buf, sizeof(buf))) > 0)
+  //   file_write(fdst, buf, n);
+
+  // file_close(fsrc);
+  // file_close(fdst);
+
+  return 0;
+}
+
 int sys_find_digital_root(void)
 {
   int a;

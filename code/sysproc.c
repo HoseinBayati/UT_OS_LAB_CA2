@@ -13,21 +13,23 @@ int sys_copy_file()
 {
   char *src, *dst;
   struct inode *fd_src, *fd_dst;
-  char buf[512];
+  char buf[11512];
   int n, off;
 
   if (argstr(0, &src) < 0 || argstr(1, &dst) < 0)
   {
-    cprintf("1\n");
+    cprintf("Bad Arguments.\n");
     return -1;
   }
 
   if ((fd_src = namei(src)) == 0)
   {
-    cprintf("2\n");
+    cprintf("Couldn't Open Source File.\n");
     return -1;
   }
-  
+
+  cprintf("src: %s , dst: %s \n", src, dst);
+
   ilock(fd_src);
 
   if ((fd_dst = namei(dst)) == 0)
@@ -37,16 +39,33 @@ int sys_copy_file()
 
   off = 0;
 
+  // Ensure that the following operations are within a transaction
+  begin_op();
+
+  // Inside the transaction
   while ((n = readi(fd_src, buf, off, sizeof(buf))) > 0)
   {
+    cprintf("n: %d \n", n);
+
+    // Check if we can write to the destination file
     if (writei(fd_dst, buf, off, n) != n)
     {
+      cprintf("Error writing to destination file.\n");
+
+      // Rollback the transaction
       iunlockput(fd_src);
       iunlockput(fd_dst);
+      end_op();
+
       return -1;
     }
     off += n;
   }
+
+  // Commit the transaction
+  end_op();
+
+  cprintf("File copy successful.\n");
 
   iunlockput(fd_src);
   iunlockput(fd_dst);

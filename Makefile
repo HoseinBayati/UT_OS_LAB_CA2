@@ -181,7 +181,7 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
-	_test_pid\	
+	_test_pid\
 	_testfdr\
 	_testcopyfile\
 	_test_lifetime\

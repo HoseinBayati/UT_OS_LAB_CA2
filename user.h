@@ -24,7 +24,7 @@ char *sbrk(int);
 int sleep(int);
 int uptime(void);
 
-int find_digital_root(int a);
+int find_digital_root(void);
 int copy_file(const char *src, const char *dst);
 
 // ulib.c

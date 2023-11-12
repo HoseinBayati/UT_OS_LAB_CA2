@@ -9,23 +9,34 @@
 
 int sys_copy_file()
 {
-  // char *src, *dst;
+  char *src, *dst;
   // int n;
 
-  // if (argstr(0, &src) < 0 || argstr(1, &dst) < 0)
-  //   return -1;
+  // Retrieve source and destination file names from user space
+  if (argstr(0, &src) < 0 || argstr(1, &dst) < 0)
+    return -1;
 
+  cprintf("src: %s\ndst: %s\n", src, dst);
   // struct file *fsrc, *fdst;
+
+  // Open the source file in read-only mode
   // if ((fsrc = file_open(src, O_RDONLY)) == NULL)
   //   return -1;
 
+  // // Open the destination file in write-only mode, creating it if it doesn't exist
   // if ((fdst = file_open(dst, O_WRONLY | O_CREATE)) == NULL)
+  // {
+  //   file_close(fsrc);
   //   return -1;
+  // }
 
   // char buf[512];
+
+  // // Read from the source file and write to the destination file
   // while ((n = file_read(fsrc, buf, sizeof(buf))) > 0)
   //   file_write(fdst, buf, n);
 
+  // // Close both files
   // file_close(fsrc);
   // file_close(fdst);
 
@@ -34,11 +45,11 @@ int sys_copy_file()
 
 int sys_find_digital_root(void)
 {
+  struct proc *curproc = myproc();
   int a;
-  if (argint(0, &a) < 0)
-  {
-    return -1;
-  }
+
+  // Use registers to retrieve arguments from the trap frame
+  a = curproc->tf->ebx;
 
   if (a < 0)
   {

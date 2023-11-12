@@ -3,6 +3,7 @@
         "date.h": "c",
         "param.h": "c",
         "random": "c",
-        "proc.h": "c"
+        "proc.h": "c",
+        "fcntl.h": "c"
     }
 }

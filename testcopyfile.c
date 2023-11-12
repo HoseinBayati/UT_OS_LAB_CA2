@@ -1,26 +1,7 @@
-// #include "types.h"
-// #include "stat.h"
-// #include "user.h"
-
-// int main(void)
-// {
-//     char buffer[16]; 
-//     int input_num;
-
-//     printf(1, "Enter a number: ");
-//     gets(buffer, sizeof(buffer)); 
-//     input_num = atoi(buffer);     
-
-//     int result = find_digital_root(input_num);
-//     printf(1, "Digital root of %d is %d\n", input_num, result);
-
-//     exit();
-// }
-
-
 #include "types.h"
 #include "stat.h"
 #include "user.h"
+#include "fcntl.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,8 +13,13 @@ int main(int argc, char *argv[])
     }
 
     // Print the source and destination file names
-    printf(1, "Source File: %s\n", argv[1]);
-    printf(1, "Destination File: %s\n", argv[2]);
+
+    int status = copy_file(argv[1], argv[2]);
+
+    if (status == -1)
+        printf(1, "failed to copy\n", argv[2]);
+    else
+        printf(1, "copied successfully\n", argv[2]);
 
     // Now you can implement the logic to copy the content of the source file to the destination file
 

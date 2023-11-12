@@ -28,8 +28,6 @@ int sys_copy_file()
     return -1;
   }
 
-  cprintf("src: %s , dst: %s \n", src, dst);
-
   ilock(fd_src);
 
   if ((fd_dst = namei(dst)) == 0)
@@ -39,20 +37,15 @@ int sys_copy_file()
 
   off = 0;
 
-  // Ensure that the following operations are within a transaction
   begin_op();
 
-  // Inside the transaction
   while ((n = readi(fd_src, buf, off, sizeof(buf))) > 0)
   {
-    cprintf("n: %d \n", n);
 
-    // Check if we can write to the destination file
     if (writei(fd_dst, buf, off, n) != n)
     {
       cprintf("Error writing to destination file.\n");
 
-      // Rollback the transaction
       iunlockput(fd_src);
       iunlockput(fd_dst);
       end_op();
@@ -62,10 +55,7 @@ int sys_copy_file()
     off += n;
   }
 
-  // Commit the transaction
   end_op();
-
-  cprintf("File copy successful.\n");
 
   iunlockput(fd_src);
   iunlockput(fd_dst);

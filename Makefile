@@ -183,6 +183,7 @@ UPROGS=\
 	_zombie\
 	_testfdr\
 	_testcopyfile\
+	_test_lifetime\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

@@ -5,6 +5,7 @@
         "random": "c",
         "proc.h": "c",
         "fcntl.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "spinlock.h": "c"
     }
 }

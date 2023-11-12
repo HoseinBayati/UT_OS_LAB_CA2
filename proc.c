@@ -88,6 +88,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p->start_ticks = ticks; // Initialize start_ticks with current ticks value
 
   release(&ptable.lock);
 
@@ -531,4 +532,19 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+int get_process_lifetime(int pid) {
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->pid == pid) {
+      int lifetime = ticks - p->start_ticks;
+      release(&ptable.lock);
+      return lifetime;
+    }
+  }
+  release(&ptable.lock);
+  return -1; // Process not found
 }

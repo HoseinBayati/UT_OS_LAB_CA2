@@ -26,6 +26,8 @@ int uptime(void);
 
 int find_digital_root(void);
 int copy_file(const char *src, const char *dst);
+int get_process_lifetime(int pid);
+
 
 // ulib.c
 int stat(const char *, struct stat *);

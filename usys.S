@@ -33,3 +33,4 @@ SYSCALL(uptime)
 SYSCALL(find_digital_root);
 SYSCALL(copy_file);
 SYSCALL(get_process_lifetime);
+SYSCALL(get_uncle_count);

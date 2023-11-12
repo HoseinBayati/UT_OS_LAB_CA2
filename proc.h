@@ -14,6 +14,7 @@ extern struct cpu cpus[NCPU];
 extern int ncpu;
 
 int get_process_lifetime(int pid);
+int get_uncle_count (int pid);
 
 //PAGEBREAK: 17
 // Saved registers for kernel context switches.

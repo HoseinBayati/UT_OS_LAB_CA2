@@ -548,3 +548,31 @@ int get_process_lifetime(int pid) {
   release(&ptable.lock);
   return -1; // Process not found
 }
+
+int get_uncle_count(int pid) {
+  struct proc *p = 0;
+  struct proc *parent = 0;
+  int uncle_count = 0;
+
+  acquire(&ptable.lock);
+
+  // Find the process with the given pid
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->pid == pid) {
+      parent = p->parent;
+      break;
+    }
+  }
+
+  if (parent) {
+    // Iterate over processes to find uncles of the parent
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+      if (p != parent && p->parent == parent)
+        uncle_count++;
+    }
+  }
+
+  release(&ptable.lock);
+
+  return uncle_count;
+}

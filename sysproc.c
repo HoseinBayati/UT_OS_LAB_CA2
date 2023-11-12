@@ -6,39 +6,44 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "stat.h"
+#include "fcntl.h"
 
 int sys_copy_file()
 {
   char *src, *dst;
-  // int n;
+  struct inode *fd_src, *fd_dst;
+  char buf[512];
+  int n, off;
 
-  // Retrieve source and destination file names from user space
   if (argstr(0, &src) < 0 || argstr(1, &dst) < 0)
     return -1;
 
-  cprintf("src: %s\ndst: %s\n", src, dst);
-  // struct file *fsrc, *fdst;
+  if ((fd_src = namei(src)) == 0)
+    return -1;
 
-  // Open the source file in read-only mode
-  // if ((fsrc = file_open(src, O_RDONLY)) == NULL)
-  //   return -1;
+  ilock(fd_src);
 
-  // // Open the destination file in write-only mode, creating it if it doesn't exist
-  // if ((fdst = file_open(dst, O_WRONLY | O_CREATE)) == NULL)
-  // {
-  //   file_close(fsrc);
-  //   return -1;
-  // }
+  if ((fd_dst = namei(dst)) == 0)
+    fd_dst = ialloc(ROOTDEV, T_FILE);
 
-  // char buf[512];
+  ilock(fd_dst);
 
-  // // Read from the source file and write to the destination file
-  // while ((n = file_read(fsrc, buf, sizeof(buf))) > 0)
-  //   file_write(fdst, buf, n);
+  off = 0;
 
-  // // Close both files
-  // file_close(fsrc);
-  // file_close(fdst);
+  while ((n = readi(fd_src, buf, off, sizeof(buf))) > 0)
+  {
+    if (writei(fd_dst, buf, off, n) != n)
+    {
+      iunlockput(fd_src);
+      iunlockput(fd_dst);
+      return -1;
+    }
+    off += n;
+  }
+
+  iunlockput(fd_src);
+  iunlockput(fd_dst);
 
   return 0;
 }

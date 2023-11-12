@@ -17,11 +17,17 @@ int sys_copy_file()
   int n, off;
 
   if (argstr(0, &src) < 0 || argstr(1, &dst) < 0)
+  {
+    cprintf("1\n");
     return -1;
+  }
 
   if ((fd_src = namei(src)) == 0)
+  {
+    cprintf("2\n");
     return -1;
-
+  }
+  
   ilock(fd_src);
 
   if ((fd_dst = namei(dst)) == 0)
@@ -154,7 +160,8 @@ int sys_uptime(void)
   return xticks;
 }
 
-int sys_get_process_lifetime(void) {
+int sys_get_process_lifetime(void)
+{
   int pid;
 
   if (argint(0, &pid) < 0)
@@ -163,7 +170,8 @@ int sys_get_process_lifetime(void) {
   return get_process_lifetime(pid);
 }
 
-int sys_get_uncle_count(void) {
+int sys_get_uncle_count(void)
+{
   int pid;
 
   if (argint(0, &pid) < 0)
@@ -171,5 +179,3 @@ int sys_get_uncle_count(void) {
 
   return get_uncle_count(pid);
 }
-
-
